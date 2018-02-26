@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     val NEW_WORD_ACTIVITY_REQUEST_CODE = 1
 
-    private var mWordViewModel: WordViewModel? = null
+    private lateinit var mWordViewModel: WordViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +31,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        mWordViewModel = ViewModelProviders.of(this).get(WordViewModel::class.java)
+        val applicationContext = this.applicationContext as MyApplication
+        val dependencies = applicationContext.getInicializacoes()
+        val factory = dependencies.viewMoldelFactory
 
-        mWordViewModel!!.allWords.observe(this, Observer {
+        mWordViewModel = ViewModelProviders.of(this, factory).get(WordViewModel::class.java)
+        mWordViewModel.allWords.observe(this, Observer {
             words -> adapter.setWords(words)
         })
     }

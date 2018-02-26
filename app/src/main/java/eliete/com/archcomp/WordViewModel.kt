@@ -1,22 +1,14 @@
 package eliete.com.archcomp
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.ViewModel
 
 /**
  * Created by eliete on 2/25/18.
  */
 
-class WordViewModel(application: Application) : AndroidViewModel(application) {
+class WordViewModel(val repository: WordRepository) : ViewModel() {
 
-    private val repository: WordRepository
-    internal val allWords: LiveData<ArrayList<Word>>
-
-    init {
-        repository = WordRepository(application)
-        allWords = repository.getAllWords()
-    }
+    val allWords = repository.getAllWords()
 
     fun insert(word: Word) {
         repository.insertWord(word)

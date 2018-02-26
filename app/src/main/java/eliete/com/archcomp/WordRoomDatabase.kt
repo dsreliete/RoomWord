@@ -14,35 +14,4 @@ import android.content.Context
 abstract class WordRoomDatabase : RoomDatabase() {
 
     abstract fun wordDao(): WordDAO
-
-    companion object {
-        private var INSTANCE: WordRoomDatabase? = null
-
-        fun getDatabase(context: Context): WordRoomDatabase? {
-            if (INSTANCE == null) {
-                synchronized(WordRoomDatabase::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(context.applicationContext,
-                                WordRoomDatabase::class.java, "word_database")
-                                .addCallback(sRoomDatabaseCallback)
-                                .build()
-                    }
-                }
-            }
-            return INSTANCE
-        }
-
-        private val sRoomDatabaseCallback = object : RoomDatabase.Callback() {
-            override fun onOpen(db: SupportSQLiteDatabase) {
-                super.onOpen(db)
-                populaDB()
-            }
-
-            private fun populaDB() {
-                INSTANCE!!.runInTransaction({
-                    INSTANCE!!.wordDao().insertAll(WordGenerator().generateList())
-                })
-            }
-        }
-    }
 }

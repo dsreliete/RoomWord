@@ -5,9 +5,9 @@ package eliete.com.archcomp
  */
 
 class WordGenerator(){
-    private var list = ArrayList<Word>()
+    private var list : MutableList<Word> = ArrayList()
 
-    fun generateList() : ArrayList<Word> {
+    fun generateList() : List<Word> {
         list.add(Word("fdfds"))
         list.add(Word("fdfds"))
         list.add(Word("fdfds"))
