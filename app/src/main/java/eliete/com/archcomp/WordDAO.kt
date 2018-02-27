@@ -15,14 +15,7 @@ interface WordDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(word: Word)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(words: List<Word>)
-
-    @Query("DELETE FROM word_table")
-    fun deleteAll()
-
     @Query("SELECT * from word_table ORDER BY word ASC")
     fun getWords(): LiveData<List<Word>>
-
-
+    
 }

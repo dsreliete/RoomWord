@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val factory = dependencies.viewMoldelFactory
 
         mWordViewModel = ViewModelProviders.of(this, factory).get(WordViewModel::class.java)
-        mWordViewModel.allWords.observe(this, Observer {
+        mWordViewModel.allWords().observe(this, Observer {
             words -> adapter.setWords(words)
         })
     }
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val word = Word(data.getStringExtra(NewWordActivity.EXTRA_REPLY))
-            mWordViewModel!!.insert(word)
+            mWordViewModel.insert(word)
         } else {
             Toast.makeText(
                     applicationContext,

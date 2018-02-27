@@ -11,17 +11,17 @@ import java.util.concurrent.Executors
 
 class Dependencies(val context : Context) {
 
-    val wordRepository:WordRepository by lazy {
-        WordRepository(roomDatabase, IOExecutor)
+    private val wordRepository : DataRepository by lazy {
+        WordRepository(roomDatabase.wordDao(), IOExecutor)
     }
 
-    val roomDatabase : WordRoomDatabase by lazy {
+    private val roomDatabase : WordRoomDatabase by lazy {
         Room.databaseBuilder(context.applicationContext,
                 WordRoomDatabase::class.java, "word_database")
                 .build()
     }
 
-    val IOExecutor: ExecutorService by lazy {
+    private val IOExecutor : ExecutorService by lazy {
         Executors.newSingleThreadExecutor()
     }
 

@@ -1,30 +1,22 @@
 package eliete.com.archcomp
 
 import android.arch.lifecycle.LiveData
-import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executor
 
 
 /**
  * Created by eliete on 2/25/18.
  */
 
-class WordRepository internal constructor(val db: WordRoomDatabase, val ioExecutor: ExecutorService) {
-    private val wordDao = db.wordDao()
-    private val words: LiveData<List<Word>>
+open class WordRepository internal constructor(val wordDao: WordDAO, val ioExecutor: Executor) : DataRepository {
 
-    init {
-        words = wordDao.getWords()
+    override fun getAllWords(): LiveData<List<Word>> {
+        return wordDao.getWords()
     }
 
-    fun getAllWords(): LiveData<List<Word>> {
-        return words
-    }
-
-    fun insertWord(word: Word) {
+    override fun insertWord(word: Word) {
         ioExecutor.execute({
-            db.runInTransaction {
-                wordDao.insert(word)
-            }
+            wordDao.insert(word)
         })
     }
 }
